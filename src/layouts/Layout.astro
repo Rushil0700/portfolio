@@ -1,0 +1,92 @@
+---
+import '@fontsource-variable/inter-tight/wght.css';
+import '@fontsource/jetbrains-mono/400.css';
+import '@fontsource/jetbrains-mono/500.css';
+import '../styles/global.css';
+import interTight from '@fontsource-variable/inter-tight/files/inter-tight-latin-wght-normal.woff2?url';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import Palette from '../components/Palette.astro';
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+}
+
+const {
+  title = 'Rushil Kubavat — Pulling signal out of noise',
+  description = 'Rushil Kubavat: data science and ML engineering student at NMIMS MPSTME, building ML systems across healthcare, legal AI, finance, environment and audio — forecasting, retrieval, agents and speech.',
+  image = '/og.png',
+} = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const ogImage = new URL(image, Astro.site);
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script is:inline>
+      document.documentElement.classList.add('js');
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('rm');
+      // Theme before first paint: saved choice, else the OS setting.
+      var theme;
+      try { theme = localStorage.getItem('rk-theme'); } catch (e) {}
+      if (theme !== 'light' && theme !== 'dark') theme = matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+      document.documentElement.dataset.theme = theme;
+    </script>
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="author" content="Rushil Kubavat" />
+    <meta name="theme-color" content="#0f1420" />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preload" href={interTight} as="font" type="font/woff2" crossorigin />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Rushil Kubavat" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <script type="application/ld+json" set:html={JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'Person',
+      name: 'Rushil Kubavat',
+      jobTitle: 'Data Science & ML Engineering Student',
+      affiliation: 'NMIMS MPSTME',
+      url: Astro.site?.toString(),
+      sameAs: ['https://github.com/Rushil0700', 'https://www.linkedin.com/in/rushil-kubavat-687825197'],
+    })} />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <slot name="preloader" />
+    <Nav />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+    <Palette />
+
+    <div class="cursor" data-cursor-root aria-hidden="true">
+      <div class="cursor__ring"><span class="cursor__ring-shape"></span><span class="cursor__label"></span></div>
+      <div class="cursor__dot"></div>
+    </div>
+    <div class="toast mono" data-toast role="status" aria-live="polite"></div>
+    <div class="grain" aria-hidden="true"></div>
+
+    <script>
+      import '../scripts/main.ts';
+    </script>
+  </body>
+</html>

@@ -1,0 +1,47 @@
+---
+import { EMAIL, GITHUB, LINKEDIN, RESUME, projects } from '../data/projects';
+
+const items = [
+  { group: 'Navigate', label: 'Home', hint: 'top', action: 'goto:#top' },
+  { group: 'Navigate', label: 'About', hint: '∿', action: 'goto:#about' },
+  { group: 'Navigate', label: 'Work', hint: '01', action: 'goto:#work' },
+  { group: 'Navigate', label: 'Index', hint: '02', action: 'goto:#index' },
+  { group: 'Navigate', label: 'Lab', hint: '03', action: 'goto:#lab' },
+  { group: 'Navigate', label: 'Experience', hint: '∿', action: 'goto:#experience' },
+  { group: 'Navigate', label: 'Contact', hint: '04', action: 'goto:#contact' },
+  ...projects.map((p) => ({
+    group: 'Projects',
+    label: p.live ? `${p.title} — open live app` : p.title,
+    hint: p.live ? p.live.label : (p.domain ?? p.year),
+    action: p.live ? `ext:${p.live.href}` : `href:/work/${p.slug}/`,
+  })),
+  { group: 'Actions', label: 'Copy email', hint: EMAIL, action: `copy:${EMAIL}` },
+  { group: 'Actions', label: 'Open GitHub', hint: '↗', action: `ext:${GITHUB}` },
+  { group: 'Actions', label: 'Open LinkedIn', hint: '↗', action: `ext:${LINKEDIN}` },
+  { group: 'Actions', label: 'Download resume', hint: 'PDF', action: `ext:${RESUME}` },
+  { group: 'Actions', label: 'Toggle light / dark', hint: '◐', action: 'theme' },
+  { group: 'Actions', label: 'Toggle sound', hint: 'SND', action: 'sound' },
+];
+---
+
+<dialog class="palette" data-palette aria-label="Command menu">
+  <div class="palette__field">
+    <span class="mono muted" aria-hidden="true">⌘K</span>
+    <input
+      type="text"
+      placeholder="Type a command or search…"
+      role="combobox"
+      aria-expanded="true"
+      aria-controls="palette-list"
+      aria-autocomplete="list"
+      aria-label="Search commands"
+      autocomplete="off"
+      spellcheck="false"
+    />
+  </div>
+  <ul class="palette__list" id="palette-list" role="listbox" aria-label="Commands" data-lenis-prevent></ul>
+  <div class="palette__foot mono" aria-hidden="true">
+    <span>↑↓ move</span><span>↵ select</span><span>esc close</span>
+  </div>
+</dialog>
+<script type="application/json" id="palette-data" set:html={JSON.stringify(items)} />

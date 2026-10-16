@@ -1,0 +1,77 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { GITHUB, projects, type Project } from '../../data/projects';
+
+export function getStaticPaths() {
+  return projects.map((p, i) => ({
+    params: { slug: p.slug },
+    props: { project: p, next: projects[(i + 1) % projects.length] },
+  }));
+}
+
+const { project: p, next } = Astro.props as { project: Project; next: Project };
+const label = p.domain ?? (p.tier === 'lab' ? 'Lab' : 'Index');
+const links = [
+  ...(p.live ? [{ label: `Open ${p.live.label}`, href: p.live.href }] : []),
+  ...(p.links ?? [{ label: 'GitHub', href: GITHUB }]),
+];
+---
+
+<Layout title={`${p.title} — Rushil Kubavat`} description={`${p.title}: ${p.outcome}`}>
+  <article class="detail container">
+    <div class="detail__top mono">
+      <a href={p.tier === 'featured' ? '/#work' : p.tier === 'lab' ? '/#lab' : '/#index'} data-magnetic="0.25">← All work</a>
+      <span data-scramble>{label} · {p.year}</span>
+    </div>
+
+    <h1 class="detail__title">{p.title}</h1>
+    <p class="detail__outcome">{p.outcome}</p>
+    {p.live && (
+      <a class="live mono" href={p.live.href} target="_blank" rel="noopener" style="margin-top: 24px" data-cursor="Launch">
+        <span class="status__dot" aria-hidden="true"></span>
+        Live{p.live.note && <> — {p.live.note}</>} ↗
+      </a>
+    )}
+    <div class="tags" style="margin-top: 24px">{p.tags.map((t) => <span class="tag">{t}</span>)}</div>
+
+    <div class="detail__plate" data-reveal="clip">
+      {p.image ? (
+        <img src={p.image} alt={`${p.title} screenshot`} decoding="async" />
+      ) : (
+        <canvas data-art={p.art} data-seed={p.slug} data-caption={`Fig. — ${p.short}`} aria-hidden="true" />
+      )}
+    </div>
+
+    <div class="detail__body">
+      <aside>
+        <div class="section-head mono" data-rule style="margin-bottom: 0">
+          <h2 data-scramble>Spec sheet</h2>
+        </div>
+        {p.specs && (
+          <dl class="specs mono" style="border-top: 0">
+            {p.specs.map((s) => (
+              <div><dt>{s.label}</dt><dd>{s.value}</dd></div>
+            ))}
+          </dl>
+        )}
+        <div class="detail__links">
+          {links.map((l) => (
+            <a class="btn" href={l.href} target="_blank" rel="noopener" data-magnetic="0.3">{l.label} ↗</a>
+          ))}
+        </div>
+      </aside>
+      <div>
+        <p class="detail__overview" data-reveal="lines">{p.overview}</p>
+        <h2 class="sr-only">Approach</h2>
+        <ol class="approach">
+          {p.approach.map((a) => <li>{a}</li>)}
+        </ol>
+      </div>
+    </div>
+
+    <a class="next" href={`/work/${next.slug}/`} data-cursor="Next">
+      <span class="next__label mono">Next channel →</span>
+      <span class="next__title" style="display:block">{next.title}</span>
+    </a>
+  </article>
+</Layout>

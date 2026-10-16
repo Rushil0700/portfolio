@@ -1,0 +1,277 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { EMAIL, GITHUB, LINKEDIN, RESUME, featured, indexed, lab, stack, timeline } from '../data/projects';
+---
+
+<Layout>
+  <div slot="preloader" class="preloader" data-preloader aria-hidden="true">
+    <span class="preloader__count" data-count>000</span>
+    <span class="preloader__line" data-line></span>
+    <div class="preloader__meta mono">
+      <span>RK — Portfolio ’26</span>
+      <span>Acquiring signal</span>
+    </div>
+  </div>
+
+  <!-- 1 · Hero ─────────────────────────────────────────────── -->
+  <section class="hero container" id="top" data-hero aria-labelledby="hero-title">
+    <div class="readouts mono">
+      <div>
+        <span class="snr">Noise <b data-noise>74%</b></span>
+        <span class="hide-sm" data-mode>Mode 01 — Forecasting</span>
+      </div>
+      <div>
+        <span data-scramble-now>LAT 19.07°N</span>
+        <span data-scramble-now>LON 72.88°E</span>
+      </div>
+    </div>
+
+    <div class="wave" aria-hidden="true">
+      <div class="wave__ticks">{Array.from({ length: 11 }, () => <i />)}</div>
+      <div class="wave__axis"></div>
+      <canvas class="wave__canvas" data-wave></canvas>
+    </div>
+
+    <div class="hero__main">
+      <div class="hero__head">
+        <h1 class="hero-name" id="hero-title">
+          <span class="hero-name__mask"><span class="hero-name__text">Rushil Kubavat</span></span>
+          <span class="hero-name__bar" aria-hidden="true"></span>
+        </h1>
+        <h2 class="hero-title">
+          <span class="l1">Pulling signal</span><br /><span class="l2">out of noise.</span>
+        </h2>
+      </div>
+      <div class="hero__side">
+        <p class="hero__sub" data-hero-fade>Data science &amp; ML engineering — forecasting, LLM retrieval, healthcare tools and audio.</p>
+        <a class="status mono" href="#contact" data-hero-fade data-magnetic="0.2">
+          <span class="status__dot" aria-hidden="true"></span>
+          Available for freelance — data, ML &amp; AI projects
+        </a>
+      </div>
+    </div>
+
+    <div class="hero__bottom">
+      <div class="readouts mono">
+        <div><span>Data Science · ML</span><span class="hide-sm">NMIMS MPSTME</span></div>
+        <div><span class="hide-sm">Scroll to clean</span><span>IST <b data-clock>--:--:--</b></span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2 · About ────────────────────────────────────────────── -->
+  <section class="section" id="about" aria-labelledby="about-label">
+    <div class="container">
+      <div class="section-head mono" data-rule>
+        <h2 id="about-label" data-scramble>∿ / About</h2>
+        <span class="muted">Mumbai, IN</span>
+      </div>
+      <div class="about__grid">
+        <div class="about__aside mono">
+          <span>Diploma + B.Tech</span>
+          <span>Data Science</span>
+          <span>2022 — 2028</span>
+        </div>
+        <p class="about__text" data-reveal="lines">
+          I’m a data science and software engineering student who builds automated analytical pipelines and predictive
+          models. <em>I work where data is messiest — hospital package codes, legal documents, markets, city air and noisy
+          audio — and turn it into something you can trust.</em>
+        </p>
+      </div>
+    </div>
+    <div class="marquee" aria-label="Stack">
+      <div class="marquee__track">
+        <ul class="marquee__group">
+          {stack.map((s) => <li class="marquee__item">{s}</li>)}
+        </ul>
+        <ul class="marquee__group" aria-hidden="true">
+          {stack.map((s) => <li class="marquee__item">{s}</li>)}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 · Selected work ────────────────────────────────────── -->
+  <section class="section" id="work" aria-labelledby="work-label">
+    <div class="container">
+      <div class="section-head mono" data-rule>
+        <h2 id="work-label" data-scramble>01 / Work</h2>
+        <span class="muted">Selected work — {String(featured.length).padStart(2, '0')}</span>
+      </div>
+      <p class="section-title display" data-reveal="lines">Five signals,<br />cleanly recovered.</p>
+      <ul class="work__grid">
+        {featured.map((p) => (
+          <li>
+            <a
+              class="card"
+              data-preview-row
+              data-slug={p.slug}
+              data-art={p.art}
+              data-title={p.title}
+              data-image={p.image}
+              href={p.live ? p.live.href : `/work/${p.slug}/`}
+              target={p.live ? '_blank' : undefined}
+              rel={p.live ? 'noopener' : undefined}
+              data-cursor={p.live ? 'Launch' : 'Open'}
+            >
+              <div class="card__media" data-reveal="clip">
+                {p.image ? (
+                  <img src={p.image} alt="" loading="lazy" decoding="async" />
+                ) : (
+                  <canvas data-art={p.art} data-seed={p.slug} aria-hidden="true" />
+                )}
+              </div>
+              <div class:list={['card__meta mono', { 'card__meta--live': p.live }]}>
+                <span>{p.channel} · {p.domain} · {p.year}</span>
+                {p.live && (
+                  <span class="live mono">
+                    <span class="status__dot" aria-hidden="true"></span>
+                    Live{p.live.note && <> — {p.live.note}</>}
+                  </span>
+                )}
+                <canvas class="spark" data-spark={p.spark} data-seed={p.slug} aria-hidden="true" />
+              </div>
+              <h3 class="card__title">{p.title}<span class="card__arrow" aria-hidden="true">↗</span></h3>
+              <p class="card__outcome">{p.outcome}</p>
+              <div class="tags">{p.tags.map((t) => <span class="tag">{t}</span>)}</div>
+              {p.live && <span class="card__live-url mono">Open {p.live.label} ↗<span class="sr-only"> (opens in a new tab)</span></span>}
+            </a>
+          </li>
+        ))}
+        {featured.length % 2 === 1 && (
+          <li>
+            <a class="card card--more" href="#index" data-cursor="View">
+              <span class="mono muted">02 / Index</span>
+              <span class="card--more__title">+{indexed.length} more projects</span>
+              <span class="mono muted">{indexed.map((p) => p.short).join(' · ')}</span>
+              <span class="card--more__arrow" aria-hidden="true">↓</span>
+            </a>
+          </li>
+        )}
+      </ul>
+    </div>
+  </section>
+
+  <!-- 4 · Index ────────────────────────────────────────────── -->
+  <section class="section" id="index" aria-labelledby="index-label">
+    <div class="container">
+      <div class="section-head mono" data-rule>
+        <h2 id="index-label" data-scramble>02 / Index</h2>
+        <span class="muted">More experiments — {String(indexed.length).padStart(2, '0')}</span>
+      </div>
+      <div class="index__head mono" aria-hidden="true">
+        <span>Year · Field</span><span>Project</span><span>Stack</span><span></span>
+      </div>
+      <ul class="index__list" data-index-list>
+        {indexed.map((p) => (
+          <li>
+            <a
+              class="index__row"
+              href={`/work/${p.slug}/`}
+              data-index-row
+              data-slug={p.slug}
+              data-art={p.art}
+              data-title={p.title}
+              data-image={p.image}
+              data-cursor="View"
+            >
+              <span class="index__media" aria-hidden="true">
+                <canvas data-art={p.art} data-seed={p.slug} />
+              </span>
+              <span class="index__year mono">{p.year}<span class="index__domain">{p.domain}</span></span>
+              <span class="index__name">
+                {p.title}
+                <span class="index__outcome">{p.outcome}</span>
+              </span>
+              <span class="index__tags tags">{p.tags.map((t) => <span class="tag">{t}</span>)}</span>
+              <span class="index__arrow" aria-hidden="true">→</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+    <div class="preview" data-preview aria-hidden="true">
+      <canvas></canvas>
+      <img alt="" hidden />
+      <span class="preview__label mono" data-preview-label></span>
+    </div>
+  </section>
+
+  <!-- 5 · Lab ──────────────────────────────────────────────── -->
+  <section class="section" id="lab" aria-labelledby="lab-label">
+    <div class="container">
+      <div class="section-head mono" data-rule>
+        <h2 id="lab-label" data-scramble>03 / Lab</h2>
+        <span class="muted">Playthings &amp; side quests</span>
+      </div>
+      <ul class="lab__grid">
+        {lab.map((p, i) => (
+          <li>
+            <a class="tile" href={`/work/${p.slug}/`} data-cursor="Open">
+              <div class="tile__top mono"><span>L.{String(i + 1).padStart(2, '0')}</span><span>{p.year}</span></div>
+              <div class="bb" data-bb aria-hidden="true">{Array.from({ length: 64 }, () => <i />)}</div>
+              <div>
+                <h3 class="tile__title">{p.title}</h3>
+                <p class="tile__desc">{p.outcome}</p>
+              </div>
+            </a>
+          </li>
+        ))}
+        {[2, 3].map((n) => (
+          <li>
+            <div class="tile tile--empty">
+              <div class="tile__top mono"><span>L.{String(n).padStart(2, '0')}</span><span>—</span></div>
+              <p class="mono">Slot {String(n).padStart(2, '0')} — coming soon<span class="blink" aria-hidden="true">_</span></p>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- 6 · Experience ───────────────────────────────────────── -->
+  <section class="section" id="experience" aria-labelledby="xp-label">
+    <div class="container">
+      <div class="section-head mono" data-rule>
+        <h2 id="xp-label" data-scramble>∿ / Record</h2>
+        <span class="muted">Experience &amp; education</span>
+      </div>
+      <ol class="log">
+        {timeline.map((t) => (
+          <li class="log__row">
+            <span class="mono muted">{t.period}</span>
+            <span class="log__role">{t.role}<span class="log__org">{t.org}</span></span>
+            <span class="log__note">{t.note}</span>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- 7 · Contact ──────────────────────────────────────────── -->
+  <section class="section contact" id="contact" aria-labelledby="contact-title">
+    <div class="container">
+      <div class="section-head mono" data-rule>
+        <h2 data-scramble>04 / Contact</h2>
+        <span class="muted">Mumbai · UTC+5:30</span>
+      </div>
+      <p class="contact__title" id="contact-title" data-reveal="lines">Let’s talk.</p>
+      <div class="contact__grid">
+        <div>
+          <button class="email" type="button" data-copy={EMAIL} data-cursor="Copy">
+            <span class="mono muted">Email — click to copy</span>
+            <span class="email__addr">{EMAIL}</span>
+          </button>
+          <div class="contact__actions">
+            <a class="btn btn--solid" href={RESUME} download data-magnetic="0.3">Resume ↓</a>
+            <a class="btn" href={`mailto:${EMAIL}`} data-magnetic="0.3">Write an email</a>
+          </div>
+        </div>
+        <nav class="socials mono" aria-label="Elsewhere">
+          <a href={LINKEDIN} target="_blank" rel="noopener" data-cursor="Open">LinkedIn <span aria-hidden="true">↗</span></a>
+          <a href={GITHUB} target="_blank" rel="noopener" data-cursor="Open">GitHub <span aria-hidden="true">↗</span></a>
+        </nav>
+      </div>
+    </div>
+  </section>
+</Layout>

@@ -1,0 +1,41 @@
+---
+const links = [
+  { n: '01', label: 'Work', href: '/#work' },
+  { n: '02', label: 'Index', href: '/#index' },
+  { n: '03', label: 'Lab', href: '/#lab' },
+  { n: '04', label: 'Contact', href: '/#contact' },
+];
+---
+
+<header class="nav" data-nav>
+  <div class="container nav__inner">
+    <a href="/#top" class="nav__mono" data-magnetic="0.25">
+      <span class="nav__mono-dot" aria-hidden="true"></span>Rushil Kubavat<span class="sr-only">, home</span>
+    </a>
+    <nav aria-label="Primary">
+      <ul class="nav__links">
+        {links.map((l) => (
+          <li>
+            <a class="nav__link mono" href={l.href} data-nav-link data-magnetic="0.3">
+              <span>{l.n}</span>{l.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+    <div class="nav__tools">
+      <button class="theme-toggle mono" type="button" data-theme-toggle aria-pressed="true" data-magnetic="0.25">
+        <span class="theme-toggle__icon" aria-hidden="true"></span>
+        <span data-theme-label>Dark</span><span class="sr-only"> theme — switch</span>
+      </button>
+      <button class="sound-toggle mono" type="button" data-sound-toggle aria-pressed="false" data-magnetic="0.25">
+        <span class="sound-bars" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span data-sound-label>SND OFF</span><span class="sr-only"> — interface sound</span>
+      </button>
+      <button class="kbd-hint mono" type="button" data-palette-open aria-label="Open command menu (Command K)" data-magnetic="0.25">
+        ⌘K
+      </button>
+      <button class="nav__menu-btn mono" type="button" data-palette-open aria-label="Open menu">Menu</button>
+    </div>
+  </div>
+</header>
